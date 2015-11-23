@@ -16,7 +16,7 @@ function intro()
 	print("\nWelcome to Rock-Paper-Scissors!")
 	print("options:")
 	print("p\tPlay the game\n")
-	print("a\tAdd moves (e.g. Superman, God, Dr. Albing\n")
+	print("c\tReplace a move (e.g. Replace rock with kryptonite\n")
 	local input = tostring(io.read())
 	return input
 end
@@ -62,25 +62,27 @@ function play()
 
 end
 
-function addMove()
+function changeMove()
                 print("Enter the string representation of your new move\n")
                 local name = tostring(io.read())                
                 print("Enter the symbol representation for your move, (e.g. K for Kryptonite)\n")
                 local symbol = tostring(io.read())
 
-                print("Enter which moves your new move beats.\nThese are the current moves:")
+                print("Enter the symbol for the move your new move replaces.\nThese are the current symbols:")
                 for key,value in pairs(normal_moves) do 
-                    print(value)
+                    print(key)
                 end
                 
+                local replace = tostring(io.read())
                 normal_moves[symbol] = name                    
+                winning[name] = winning[normal_moves[replace]]
 
-                print("Hit enter after inputting each move, and type done when done")
-                local entry = tostring(io.read())
-                while entry ~= "done" do
-                      winning[name] = entry
-                      entry = tostring(io.read())
-                end              
+                for key,value in pairs(winning) do 
+                    if value == replace then winning[key] = name end
+                end
+                
+                winning[normal_moves[replace]] = nil
+                normal_moves[replace] = nil
 end
 
 while input ~= "p" do
@@ -88,7 +90,7 @@ while input ~= "p" do
       if input == "p" then
          play()
       end
-      if input == "a" then
-         addMove()
+      if input == "c" then
+         changeMove()
       end
 end
